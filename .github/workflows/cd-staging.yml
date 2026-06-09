@@ -1,0 +1,41 @@
+name: CD - Staging
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: []  # CI pipeline handles checks; this runs in parallel on main push
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:staging
+            ghcr.io/${{ github.repository }}:sha-${{ github.sha }}
+
+      - name: Deploy notification
+        run: |
+          echo "🚀 Staging deployment triggered"
+          echo "Image: ghcr.io/${{ github.repository }}:sha-${{ github.sha }}"
+          echo "Commit: ${{ github.event.head_commit.message }}"
+          echo ""
+          echo "In a real project, this step would:"
+          echo "  - SSH/boto3/flyctl deploy to staging server"
+          echo "  - Run smoke tests against staging"
+          echo "  - Send notification to team channel"

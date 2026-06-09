@@ -1,5 +1,5 @@
 # Web framework
-fastapi==0.115.6
+fastapi==0.115.14
 uvicorn[standard]==0.34.0
 
 # Database
@@ -9,7 +9,7 @@ sqlalchemy==2.0.36
 pydantic==2.10.3
 
 # Testing
-pytest==8.3.4
+pytest==9.0.3
 pytest-cov==6.0.0
 httpx==0.28.1
 

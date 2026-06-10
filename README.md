@@ -141,3 +141,4 @@ short-link/
 | Environment promotion | staging → production |
 | Manual approval | Production requires `DEPLOY` confirmation |
 | Automated tagging | Git tags created on production deploy |
+# test branch protection
